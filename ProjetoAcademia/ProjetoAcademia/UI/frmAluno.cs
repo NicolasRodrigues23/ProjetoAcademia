@@ -30,6 +30,21 @@ namespace ProjetoAcademia.UI {
             //executar o método da DAL enviando os dados BLL
             aDAL.Cadastrar(aBLL);
             MessageBox.Show("DADOS GRAVADOS COM SUCESSO!");
+            dgvAluno.DataSource = aDAL.ConsultarTodos();
+        }
+
+        private void frmAluno_Load(object sender, EventArgs e) {
+            dgvAluno.DataSource = aDAL.ConsultarTodos();
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e) {
+            aBLL.CodAluno = Convert.ToInt16(dgvAluno[0, dgvAluno.CurrentRow.Index].Value);
+            aBLL = aDAL.Retornar(aBLL);
+            txtNome.Text = aBLL.Nome;
+            txtCPF.Text = aBLL.Cpf;
+            txtRG.Text = aBLL.Rg;
+            txtEmail.Text = aBLL.Email;
+            txtNascimento.Value = aBLL.Data;
         }
     }
 }

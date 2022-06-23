@@ -24,5 +24,47 @@ namespace ProjetoAcademia.DAL {
             cmd.ExecuteNonQuery();
             conn.Desconectar();
         }
+
+        public DataTable ConsultarTodos() {
+            SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT * FROM ALUNO", conn.Conectar());
+            DataTable dt = new DataTable();
+            dataAdapter.Fill(dt);
+            conn.Desconectar();
+            return dt;
+        }
+
+        public void Atualizar(BLL.AlunoBLL aluno) {
+            SqlCommand cmd = new SqlCommand(@"UPDATE ALUNO 
+                SET NOME = @NOME, CPF = @CPF, RG = @RG, EMAIL = @EMAIL, DATANASCIMENTO = @DATANASCIMENTO
+                WHERE CODALUNO = @CODALUNO");
+
+            cmd.Parameters.AddWithValue("@NOME", aluno.Nome);
+            cmd.Parameters.AddWithValue("@CPF", aluno.Cpf);
+            cmd.Parameters.AddWithValue("@RG", aluno.Rg);
+            cmd.Parameters.AddWithValue("@EMAIL", aluno.Email);
+            cmd.Parameters.AddWithValue("@DATANASCIMENTO", aluno.Data);
+
+            cmd.ExecuteNonQuery();
+            conn.Desconectar();
+        }
+
+        public BLL.AlunoBLL Retornar(BLL.AlunoBLL aluno) {
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "SELECT * FROM ALUNO WHERE CODALUNO = @CODALUNO";
+            cmd.Parameters.AddWithValue("@CODALUNO", aluno.CodAluno);
+            cmd.Connection = conn.Conectar();
+            SqlDataReader dr = cmd.ExecuteReader();
+            if (dr.Read()) {
+                aluno.CodAluno = Convert.ToInt32(dr["CODALUNO"]);
+                aluno.Nome = dr["NOME"].ToString();
+                aluno.Cpf = dr["NOME"].ToString();
+                aluno.Rg = dr["NOME"].ToString();
+                aluno.Email = dr["NOME"].ToString();
+                aluno.Data = Convert.ToDateTime(dr["NOME"].ToString());
+            }
+            dr.Close();
+            conn.Desconectar();
+            return aluno;
+        }
     }
 }
