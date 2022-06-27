@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="BLL\AlunoBLL.cs" />
     <Compile Include="DAL\AlunoDAL.cs" />
+    <Compile Include="DAL\Conexao.cs" />
     <Compile Include="UI\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
